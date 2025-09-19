@@ -1,0 +1,40 @@
+:root{
+  --card:#fff; --ink:#0f172a; --muted:#475569;
+  --accent1:#34d399; --accent2:#60a5fa; --warn:#f59e0b; --danger:#ef4444;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:system-ui,Segoe UI,Heebo,Arial,sans-serif;color:var(--ink);
+  background:linear-gradient(135deg,#f0f9ff,#f7fee7)}
+.hero{padding:28px 16px;text-align:center;background:radial-gradient(1200px 400px at center,#e0f2fe 0%,#fdfcf7 60%,transparent 100%)}
+.hero h1{margin:0 0 6px;font-size:clamp(22px,3.4vw,30px)}
+.hero p{margin:0;color:var(--muted)}
+.row{margin-top:10px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.row input{padding:8px;border:1px solid #e2e8f0;border-radius:10px}
+.container{max-width:1100px;margin:18px auto;padding:0 16px}
+h2{margin:18px 4px 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.card{
+  background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:14px;
+  box-shadow:0 8px 24px rgba(99,102,241,0.08)
+}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.cat-name{margin:0;font-size:16px}
+.numbers{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:14px}
+.label{color:#64748b}
+.bar-wrap{height:10px;background:#eef2ff;border-radius:999px;overflow:hidden}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent2),var(--accent1));transition:width .3s}
+.add-row{display:flex;gap:8px;margin-top:10px}
+.add-input{flex:1;padding:10px;border:1px solid #e2e8f0;border-radius:12px}
+.btn{border:none;border-radius:12px;padding:10px 14px;background:var(--accent2);color:#fff;cursor:pointer;font-weight:600;
+  box-shadow:0 6px 16px rgba(96,165,250,.25)}
+.btn:hover{filter:brightness(.95)}
+.btn.ghost{background:#eef2ff;color:#374151}
+.btn.tiny{padding:6px 10px;font-size:12px;border-radius:10px}
+.btn.danger{background:var(--danger)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.summary{margin:20px 0}
+.summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;
+  background:#ffffffa6;border:1px solid #e5e7eb;border-radius:18px;padding:14px}
+.summary-card h3{margin:0 0 4px;font-size:14px;color:var(--muted)}
+.summary-card div{font-size:20px;font-weight:700}
+.foot{padding:18px;text-align:center;color:var(--muted);font-size:12px}
