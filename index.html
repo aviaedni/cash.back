@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>מנהל תקציב חודשי</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>מנהל תקציב חודשי</h1>
+    <p>מזינים הכנסות לחודש, מוסיפים הוצאות בקטגוריות, ורואים מה נשאר.</p>
+    <div class="row">
+      <label>חודש:</label>
+      <input id="month" type="month" />
+      <button id="switchMonth" class="btn ghost">עברי לחודש</button>
+    </div>
+    <div class="row income-row">
+      <label>הכנסות לחודש (₪):</label>
+      <input id="incomeInput" type="number" inputmode="decimal" placeholder="לדוגמה: 13750" />
+      <button id="saveIncome" class="btn ghost">שמרי</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>הוצאות משתנות</h2>
+      <div id="variable" class="grid"></div>
+    </section>
+
+    <section>
+      <h2>הוצאות קבועות</h2>
+      <div id="fixed" class="grid"></div>
+    </section>
+
+    <section class="summary">
+      <div class="summary-card">
+        <div>
+          <h3>סה״כ הכנסות</h3>
+          <div id="sumIncome">—</div>
+        </div>
+        <div>
+          <h3>סה״כ הוצאות</h3>
+          <div id="sumSpent">—</div>
+        </div>
+        <div>
+          <h3>יתרה</h3>
+          <div id="sumLeft">—</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="resetMonth" class="btn danger">איפוס חודש</button>
+        <button id="exportJson" class="btn">ייצוא נתונים (JSON)</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">פשוט. חיובי. בשליטה.</footer>
+
+  <template id="catRow">
+    <div class="card">
+      <div class="card-top">
+        <h3 class="cat-name"></h3>
+        <button class="btn tiny ghost edit">עריכת יעד</button>
+      </div>
+      <div class="numbers">
+        <div><span class="label">יעד:</span> <span class="budget">0</span> ₪</div>
+        <div><span class="label">הוצאתי:</span> <span class="spent">0</span> ₪</div>
+        <div><span class="label">נשאר:</span> <span class="left">0</span> ₪</div>
+      </div>
+      <div class="bar-wrap"><div class="bar"></div></div>
+      <div class="add-row">
+        <input class="add-input" type="number" inputmode="decimal" placeholder="סכום (₪)" />
+        <button class="btn add">+</button>
+        <button class="btn ghost tiny minus">-</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
