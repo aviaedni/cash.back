@@ -1,52 +1,63 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>תקציב ורוד — בדיקה</title>
-  <style>
-    :root{
-      --bg:#fff7fb; --card:#fff; --ink:#3a0a27; --muted:#7a3b5c;
-      --pink1:#f472b6; --pink2:#fb7185; --pink3:#fde2f3;
-      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:system-ui,Segoe UI,Heebo,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#ffe4f1,#fff7fb)}
-    .hero{padding:28px 16px;text-align:center;background:radial-gradient(1200px 420px at center,#ffe4f1 0%,#fff7fb 60%,transparent 100%)}
-    .hero h1{margin:0 0 8px;font-size:clamp(22px,3.4vw,30px)}
-    .hero p{margin:0;color:var(--muted)}
-    .row{margin-top:12px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
-    .row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
-    .container{max-width:900px;margin:18px auto;padding:0 16px}
-    h2{margin:18px 4px 10px;color:#9d174d}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-    .card{background:var(--card);border:1px solid #fbcfe8;border-radius:18px;padding:14px;box-shadow:0 10px 28px rgba(244,114,182,.15)}
-    .card-top{display:flex;justify-content:space-between;align-items:center}
-    .numbers{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:14px}
-    .label{color:#a11a51}
-    .bar-wrap{height:10px;background:var(--pink3);border-radius:999px;overflow:hidden}
-    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pink2),var(--pink1));transition:width .3s}
-    .add-row{display:flex;gap:8px;margin-top:10px}
-    .add-input{flex:1;padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
-    .btn{border:none;border-radius:12px;padding:10px 14px;background:var(--pink1);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(244,114,182,.25)}
-    .btn.ghost{background:#ffe4f1;color:#8b1a47}
-    .btn.tiny{padding:6px 10px;font-size:12px;border-radius:10px}
-    .btn.danger{background:var(--bad)}
-    .summary{margin:22px 0}
-    .summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;background:#fff;border:1px solid #fbcfe8;border-radius:18px;padding:14px}
-    .summary-card h3{margin:0 0 4px;font-size:14px;color:var(--muted)}
-    .summary-card div{font-size:20px;font-weight:800}
-    .guard{margin-top:10px;display:flex;align-items:center;gap:8px;font-weight:700}
-    .guard .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px #dcfce7}
-    .guard.warn .dot{background:var(--warn);box-shadow:0 0 0 4px #fef9c3}
-    .guard.bad  .dot{background:var(--bad); box-shadow:0 0 0 4px #fee2e2}
-    .foot{padding:18px;text-align:center;color:var(--muted);font-size:12px}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>מנהל תקציב — קבוצות + פירוט</title>
+<style>
+  :root{
+    --bg:#fff7fb; --card:#fff; --ink:#3a0a27; --muted:#7a3b5c;
+    --pink1:#f472b6; --pink2:#fb7185; --pink3:#fde2f3;
+    --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    --line:#fbcfe8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:system-ui,Segoe UI,Heebo,Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(135deg,#ffe4f1,#fff7fb)}
+  .hero{padding:26px 16px;text-align:center;background:radial-gradient(1200px 420px at center,#ffe4f1 0%,#fff7fb 60%,transparent 100%)}
+  .hero h1{margin:0 0 8px;font-size:clamp(22px,3.4vw,30px)}
+  .hero p{margin:0;color:var(--muted)}
+  .row{margin-top:12px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+  .row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
+  .btn{border:none;border-radius:12px;padding:10px 14px;background:var(--pink1);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(244,114,182,.25)}
+  .btn:hover{filter:brightness(.95)}
+  .btn.ghost{background:#ffe4f1;color:#8b1a47}
+  .btn.tiny{padding:6px 10px;font-size:12px;border-radius:10px}
+  .btn.danger{background:var(--bad)}
+  .container{max-width:1100px;margin:18px auto;padding:0 16px}
+  h2{margin:18px 4px 10px;color:#9d174d}
+  .group{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 10px 28px rgba(244,114,182,.12)}
+  .group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .group-title{margin:0;font-size:18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+  .card{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:12px}
+  .card-top{display:flex;justify-content:space-between;align-items:center}
+  .sub-name{margin:0;font-size:15px;color:#9d174d}
+  .numbers{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:13px}
+  .label{color:#a11a51}
+  .bar-wrap{height:8px;background:var(--pink3);border-radius:999px;overflow:hidden}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pink2),var(--pink1));transition:width .3s}
+  .add-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;margin-top:10px}
+  .add-row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
+  .tools{display:flex;gap:6px;margin-top:8px}
+  .summary{margin:22px 0}
+  .summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+  .summary-card h3{margin:0 0 4px;font-size:14px;color:var(--muted)}
+  .summary-card div{font-size:20px;font-weight:800}
+  .guard{margin-top:10px;display:flex;align-items:center;gap:8px;font-weight:700}
+  .guard .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px #dcfce7}
+  .guard.warn .dot{background:var(--warn);box-shadow:0 0 0 4px #fef9c3}
+  .guard.bad .dot{background:var(--bad);box-shadow:0 0 0 4px #fee2e2}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{border-bottom:1px solid #f1c6df;padding:8px 6px;font-size:13px;text-align:right}
+  th{background:#fff5fb;color:#7a3b5c}
+  .hidden{display:none}
+</style>
 </head>
 <body>
   <header class="hero">
-    <h1>מנהל תקציב — ורוד (בדיקה)</h1>
-    <p>הזיני הכנסות, הוסיפי הוצאות, ושמרי יעד חיסכון מינימלי של 1,000 ₪.</p>
+    <h1>מנהל תקציב — קבוצות + פירוט</h1>
+    <p>מוסיפים הוצאה עם תיאור לכל תת־קטגוריה, רואים כמה נשאר, ושומרים יעד חיסכון של 1,000 ₪.</p>
     <div class="row">
       <label>חודש:</label>
       <input id="month" type="month" />
@@ -54,140 +65,298 @@
     </div>
     <div class="row">
       <label>הכנסות לחודש (₪):</label>
-      <input id="incomeInput" type="number" inputmode="decimal" placeholder="לדוגמה: 13750" />
+      <input id="incomeInput" type="number" inputmode="decimal" placeholder="למשל: 13750" />
       <button id="saveIncome" class="btn ghost">שמרי</button>
     </div>
   </header>
 
-  <main class="container">
-    <section>
-      <h2>קטגוריות לדוגמה</h2>
-      <div id="wrap" class="grid"></div>
-    </section>
+  <main class="container" id="app"></main>
 
-    <section class="summary">
-      <div class="summary-card">
-        <div><h3>סה״כ הכנסות</h3><div id="sumIncome">—</div></div>
-        <div><h3>סה״כ הוצאות</h3><div id="sumSpent">—</div></div>
-        <div><h3>יתרה (אחרי יעד 1,000)</h3><div id="sumLeft">—</div></div>
-      </div>
-      <div class="guard"><span class="dot"></span><span id="guardText">שומרות על יעד החיסכון</span></div>
-    </section>
-  </main>
-
-  <footer class="foot">אם זה עובד — מרחיבים לכל הקטגוריות.</footer>
-
-  <template id="catRow">
-    <div class="card">
-      <div class="card-top">
-        <h3 class="cat-name"></h3>
-        <button class="btn tiny ghost edit">עריכת יעד</button>
-      </div>
-      <div class="numbers">
-        <div><span class="label">יעד:</span> <span class="budget">0</span> ₪</div>
-        <div><span class="label">הוצאתי:</span> <span class="spent">0</span> ₪</div>
-        <div><span class="label">נשאר:</span> <span class="left">0</span> ₪</div>
-      </div>
-      <div class="bar-wrap"><div class="bar"></div></div>
-      <div class="add-row">
-        <input class="add-input" type="number" inputmode="decimal" placeholder="סכום (₪)" />
-        <button class="btn add">+</button>
-        <button class="btn ghost tiny minus">-</button>
-      </div>
+  <section class="container summary">
+    <div class="summary-card">
+      <div><h3>סה״כ הכנסות</h3><div id="sumIncome">—</div></div>
+      <div><h3>סה״כ הוצאות</h3><div id="sumSpent">—</div></div>
+      <div><h3>יתרה (אחרי יעד 1,000)</h3><div id="sumLeft">—</div></div>
     </div>
-  </template>
+    <div class="guard"><span class="dot"></span><span id="guardText">שומרות על יעד החיסכון</span></div>
+    <div class="row" style="margin-top:12px">
+      <button id="resetMonth" class="btn danger">איפוס חודש</button>
+      <button id="exportJson" class="btn">ייצוא JSON</button>
+    </div>
+  </section>
 
-  <script>
-    // ========= לוגיקה בסיסית, בלי תלות בקבצים חיצוניים =========
-    const MIN_SAVINGS = 1000;
-    const DEFAULTS = {"אוכל":3000,"סופר":2000,"מסעדות/וולט":1000,"תחבורה":300,"חשבונות":280};
-    const monthEl = document.getElementById('month');
-    const wrap = document.getElementById('wrap');
-    const tpl = document.getElementById('catRow');
-    const sumIncomeEl = document.getElementById('sumIncome');
-    const sumSpentEl  = document.getElementById('sumSpent');
-    const sumLeftEl   = document.getElementById('sumLeft');
-    const guardRow    = document.querySelector('.guard');
-    const guardText   = document.getElementById('guardText');
-    const incomeInput = document.getElementById('incomeInput');
+<script>
+(function(){
+  const MIN_SAVINGS = 1000;
 
-    function fmt(n){ return Number(n||0).toLocaleString('he-IL',{maximumFractionDigits:0}); }
-    function nowMonth(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0'); }
-    function sk(m){ return 'pink-demo:'+m; } function ik(m){ return 'pink-demo:'+m+':income'; }
-
-    // אחסון בטוח (פולבאק אם localStorage חסום)
-    const SS = (()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return localStorage;}catch{let mem={};return{getItem:k=>mem[k]||null,setItem:(k,v)=>mem[k]=String(v),removeItem:k=>delete mem[k]};}})();
-
-    function load(m){
-      const raw = SS.getItem(sk(m));
-      if(!raw){
-        const data = {month:m, budgets:{...DEFAULTS}, spent:Object.fromEntries(Object.keys(DEFAULTS).map(k=>[k,0]))};
-        SS.setItem(sk(m), JSON.stringify(data));
-        return data;
-      }
-      try{return JSON.parse(raw);}catch{SS.removeItem(sk(m));return load(m);}
+  // ===== מבנה קבוצות ותתי־קטגוריות =====
+  const GROUPS = [
+    {
+      key:'food', title:'אוכל',
+      subs:[
+        {key:'super',  name:'סופר'},
+        {key:'wolt',   name:'וולט/מסעדות'}
+      ]
+    },
+    {
+      key:'fixed', title:'הוצאות שוטפות',
+      subs:[
+        {key:'bills',    name:'חשבונות'},
+        {key:'loan',     name:'הלוואה'},
+        {key:'rent',     name:'שכר דירה'},
+        {key:'subs',     name:'מנויים קבועים'}
+      ]
+    },
+    {
+      key:'travel', title:'נסיעות',
+      subs:[
+        {key:'public',  name:'תחבורה ציבורית'},
+        {key:'taxi',    name:'מוניות'}
+      ]
+    },
+    {
+      key:'misc', title:'הוצאות',
+      subs:[
+        {key:'fun',       name:'בזבוזים'},
+        {key:'unexpected',name:'הוצאות בלתי צפויות'},
+        {key:'credit',    name:'תשלומי אשראי בקרדיט'}
+      ]
     }
-    function save(d){ SS.setItem(sk(d.month), JSON.stringify(d)); }
-    function loadInc(m){ return Number(SS.getItem(ik(m)))||0; }
-    function saveInc(m,v){ SS.setItem(ik(m), String(v||0)); }
+  ];
 
-    let state;
+  // ===== יעדי ברירת מחדל =====
+  const DEFAULT_BUDGETS = {
+    super:2000, wolt:1000,
+    bills:280, loan:1000, rent:3600, subs:315,
+    public:208, taxi:86,
+    fun:500, unexpected:400, credit:1914
+  };
 
-    function renderCat(parent, key){
-      const node = tpl.content.firstElementChild.cloneNode(true);
-      const name=node.querySelector('.cat-name');
-      const budgetEl=node.querySelector('.budget');
-      const spentEl=node.querySelector('.spent');
-      const leftEl=node.querySelector('.left');
-      const bar=node.querySelector('.bar');
-      const add=node.querySelector('.add');
-      const minus=node.querySelector('.minus');
-      const input=node.querySelector('.add-input');
-      const edit=node.querySelector('.edit');
-      name.textContent=key;
+  // ===== DOM refs =====
+  const app = document.getElementById('app');
+  const monthEl = document.getElementById('month');
+  const switchBtn = document.getElementById('switchMonth');
+  const incomeInput = document.getElementById('incomeInput');
+  const saveIncomeBtn = document.getElementById('saveIncome');
+  const resetBtn = document.getElementById('resetMonth');
+  const exportBtn = document.getElementById('exportJson');
+  const sumIncomeEl = document.getElementById('sumIncome');
+  const sumSpentEl  = document.getElementById('sumSpent');
+  const sumLeftEl   = document.getElementById('sumLeft');
+  const guardRow    = document.querySelector('.guard');
+  const guardText   = document.getElementById('guardText');
 
-      function refresh(){
-        const b=state.budgets[key]||0, s=state.spent[key]||0, l=b-s;
-        budgetEl.textContent=fmt(b); spentEl.textContent=fmt(s); leftEl.textContent=fmt(l);
-        bar.style.width = b>0 ? Math.min(100,(s/b)*100)+'%' : '0%';
-        bar.style.background = l>=0 ? 'linear-gradient(90deg,#fb7185,#f472b6)': 'linear-gradient(90deg,#f59e0b,#ef4444)';
-      }
-      function addAmount(v){
-        const inc=loadInc(monthEl.value), total=Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
-        if(inc - (total + v) < MIN_SAVINGS){ alert('ההוצאה תוריד מתחת ל-1,000 ₪ חיסכון. נחסם.'); return; }
-        state.spent[key]=(state.spent[key]||0)+v; save(state); refresh(); summary(); input.value='';
-      }
-      add.addEventListener('click', ()=>{ const v=Number(input.value); if(v>0) addAmount(v); });
-      minus.addEventListener('click', ()=>{ const v=Number(input.value); if(v>0){ state.spent[key]=Math.max(0,(state.spent[key]||0)-v); save(state); refresh(); summary(); input.value=''; }});
-      edit.addEventListener('click', ()=>{ const cur=state.budgets[key]||0; const next=prompt('יעד חדש (₪):', cur); const n=Number(next); if(Number.isFinite(n)&&n>=0){ state.budgets[key]=n; save(state); refresh(); summary(); }});
+  // ===== storage helpers =====
+  const safeStorage = (()=>{ try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return localStorage;}catch{let mem={};return{getItem:k=>mem[k]||null,setItem:(k,v)=>mem[k]=String(v),removeItem:k=>delete mem[k]};}})();
+  const nowMonth = ()=>{ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0'); }
+  const sk = m => `budget-grouped:${m}`;
+  const ik = m => `budget-grouped:${m}:income`;
 
-      parent.appendChild(node); refresh();
+  function loadState(m){
+    const raw = safeStorage.getItem(sk(m));
+    if(!raw){
+      // מבנה מצב: budgets, spent, items לכל תת־קטגוריה
+      const state = {month:m, budgets:{}, spent:{}, items:{}};
+      GROUPS.forEach(g=>g.subs.forEach(s=>{
+        state.budgets[s.key] = DEFAULT_BUDGETS[s.key] ?? 0;
+        state.spent[s.key]   = 0;
+        state.items[s.key]   = []; // [{ts,amount,desc}]
+      }));
+      safeStorage.setItem(sk(m), JSON.stringify(state));
+      return state;
     }
+    try { return JSON.parse(raw); }
+    catch { safeStorage.removeItem(sk(m)); return loadState(m); }
+  }
+  const saveState = st => safeStorage.setItem(sk(st.month), JSON.stringify(st));
+  const loadIncome = m => Number(safeStorage.getItem(ik(m))) || 0;
+  const saveIncome = (m,v)=> safeStorage.setItem(ik(m), String(v||0));
 
-    function summary(){
-      const inc=loadInc(monthEl.value);
-      const spent=Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
-      const leftRaw=inc-spent, left=leftRaw-1000;
-      sumIncomeEl.textContent=fmt(inc)+' ₪';
-      sumSpentEl.textContent=fmt(spent)+' ₪';
-      sumLeftEl.textContent=fmt(left)+' ₪';
-      guardRow.classList.remove('warn','bad');
-      if(leftRaw<1000){ guardRow.classList.add('bad'); guardText.textContent='מתחת ליעד 1,000 — לעצור הוצאות'; }
-      else if(leftRaw<1500){ guardRow.classList.add('warn'); guardText.textContent='קרובות ליעד — זהירות'; }
-      else { guardText.textContent='שומרות על יעד החיסכון'; }
-    }
+  // ===== utils =====
+  const fmt = n => Number(n||0).toLocaleString('he-IL',{maximumFractionDigits:0});
 
-    // הפעלה
-    monthEl.value = nowMonth();
-    state = load(monthEl.value);
-    document.querySelector('#saveIncome').addEventListener('click', ()=>{ const v=Number(incomeInput.value); if(v>=0){ saveInc(monthEl.value,v); summary(); }});
+  // ===== render =====
+  let state;
 
-    // רנדר קטגוריות לדוגמה
-    Object.keys(DEFAULTS).forEach(k=> renderCat(wrap,k));
-    summary();
+  function render(){
+    app.innerHTML = '';
+    GROUPS.forEach(group=>{
+      const gEl = document.createElement('section');
+      gEl.className='group';
+      gEl.innerHTML = `
+        <div class="group-head">
+          <h2 class="group-title">${group.title}</h2>
+        </div>
+        <div class="grid"></div>
+      `;
+      const grid = gEl.querySelector('.grid');
 
-    // מעבר חודש
-    document.getElementById('switchMonth').addEventListener('click', ()=>{ state=load(monthEl.value); incomeInput.value=loadInc(monthEl.value)||''; summary(); });
-  </script>
+      group.subs.forEach(sub=>{
+        const key = sub.key;
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = `
+          <div class="card-top">
+            <h3 class="sub-name">${sub.name}</h3>
+            <button class="btn tiny ghost edit">עריכת יעד</button>
+          </div>
+          <div class="numbers">
+            <div><span class="label">יעד:</span> <span class="budget">0</span> ₪</div>
+            <div><span class="label">הוצאתי:</span> <span class="spent">0</span> ₪</div>
+            <div><span class="label">נשאר:</span> <span class="left">0</span> ₪</div>
+          </div>
+          <div class="bar-wrap"><div class="bar"></div></div>
+          <div class="add-row">
+            <input class="desc"  placeholder="על מה? (תיאור קצר)" />
+            <input class="amount" type="number" inputmode="decimal" placeholder="סכום (₪)" />
+            <button class="btn add">+</button>
+            <button class="btn ghost tiny minus">-</button>
+          </div>
+          <div class="tools">
+            <button class="btn ghost tiny toggle">פירוט</button>
+          </div>
+          <div class="details hidden">
+            <table>
+              <thead><tr><th>תאריך</th><th>תיאור</th><th>סכום (₪)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        const budgetEl = card.querySelector('.budget');
+        const spentEl  = card.querySelector('.spent');
+        const leftEl   = card.querySelector('.left');
+        const bar      = card.querySelector('.bar');
+        const editBtn  = card.querySelector('.edit');
+        const addBtn   = card.querySelector('.add');
+        const minusBtn = card.querySelector('.minus');
+        const descIn   = card.querySelector('.desc');
+        const amountIn = card.querySelector('.amount');
+        const toggle   = card.querySelector('.toggle');
+        const details  = card.querySelector('.details');
+        const tbody    = details.querySelector('tbody');
+
+        function refresh(){
+          const b = state.budgets[key]||0;
+          const s = state.spent[key]||0;
+          const l = b - s;
+          budgetEl.textContent = fmt(b);
+          spentEl.textContent  = fmt(s);
+          leftEl.textContent   = fmt(l);
+          bar.style.width = b>0 ? Math.min(100,(s/b)*100)+'%' : '0%';
+          bar.style.background = l>=0 ? 'linear-gradient(90deg,#fb7185,#f472b6)' : 'linear-gradient(90deg,#f59e0b,#ef4444)';
+          // היסטוריה
+          tbody.innerHTML = '';
+          (state.items[key]||[]).slice().reverse().forEach(it=>{
+            const tr = document.createElement('tr');
+            const d  = new Date(it.ts);
+            const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            tr.innerHTML = `<td>${ds}</td><td>${it.desc||''}</td><td>${fmt(it.amount)}</td>`;
+            tbody.appendChild(tr);
+          });
+        }
+
+        function add(amount, desc){
+          const v = Number(amount);
+          if(!v || isNaN(v) || v<=0) return;
+          // שמירת יעד חיסכון
+          const income = loadIncome(state.month);
+          const totalSpent = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+          if(income - (totalSpent + v) < MIN_SAVINGS){
+            alert(`ההוצאה תוריד מתחת לחיסכון המינימלי (${MIN_SAVINGS} ₪).`);
+            return;
+          }
+          state.spent[key] = (state.spent[key]||0) + v;
+          state.items[key].push({ts:Date.now(), amount:v, desc: (desc||'').trim()});
+          saveState(state);
+          descIn.value=''; amountIn.value='';
+          refresh(); refreshSummary();
+        }
+
+        function minus(amount){
+          const v = Number(amount);
+          if(!v || isNaN(v) || v<=0) return;
+          state.spent[key] = Math.max(0, (state.spent[key]||0) - v);
+          // לא מוחקים שורות היסטוריה אוטומטית; זו רק התאמה כספית לאחור
+          saveState(state);
+          amountIn.value='';
+          refresh(); refreshSummary();
+        }
+
+        editBtn.addEventListener('click', ()=>{
+          const current = state.budgets[key]||0;
+          const next = prompt(`יעד חדש ל"${sub.name}" (₪):`, current);
+          const n = Number(next);
+          if(Number.isFinite(n) && n>=0){
+            state.budgets[key]=n; saveState(state); refresh(); refreshSummary();
+          }
+        });
+        addBtn.addEventListener('click', ()=> add(amountIn.value, descIn.value));
+        minusBtn.addEventListener('click', ()=> minus(amountIn.value));
+        toggle.addEventListener('click', ()=> details.classList.toggle('hidden'));
+
+        refresh();
+      });
+
+      app.appendChild(gEl);
+    });
+  }
+
+  function refreshSummary(){
+    const income = loadIncome(state.month);
+    const spent  = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+    const leftRaw= income - spent;
+    const left   = leftRaw - MIN_SAVINGS;
+
+    sumIncomeEl.textContent = fmt(income)+' ₪';
+    sumSpentEl.textContent  = fmt(spent)+' ₪';
+    sumLeftEl.textContent   = fmt(left)+' ₪';
+
+    guardRow.classList.remove('warn','bad');
+    if(leftRaw < MIN_SAVINGS){ guardRow.classList.add('bad'); guardText.textContent='מתחת ליעד 1,000 — לעצור הוצאות'; }
+    else if(leftRaw < MIN_SAVINGS + 500){ guardRow.classList.add('warn'); guardText.textContent='קרובות ליעד — זהירות'; }
+    else { guardText.textContent='שומרות על יעד החיסכון'; }
+  }
+
+  // ===== init & events =====
+  monthEl.value = nowMonth();
+  state = loadState(monthEl.value);
+  incomeInput.value = loadIncome(state.month) || '';
+  render(); refreshSummary();
+
+  switchBtn.addEventListener('click', ()=>{
+    state = loadState(monthEl.value);
+    incomeInput.value = loadIncome(state.month) || '';
+    render(); refreshSummary();
+  });
+  saveIncomeBtn.addEventListener('click', ()=>{
+    const v = Number(incomeInput.value);
+    if(!isNaN(v) && v>=0){ saveIncome(state.month, v); refreshSummary(); }
+  });
+  resetBtn.addEventListener('click', ()=>{
+    if(!confirm('לאפס נתוני חודש זה?')) return;
+    safeStorage.removeItem(sk(state.month));
+    safeStorage.removeItem(ik(state.month));
+    state = loadState(state.month);
+    incomeInput.value='';
+    render(); refreshSummary();
+  });
+  exportBtn.addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify({
+      month:state.month,
+      income: loadIncome(state.month),
+      budgets:state.budgets,
+      spent:state.spent,
+      items:state.items
+    },null,2)], {type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=`budget-${state.month}.json`;
+    a.click();
+  });
+})();
+</script>
 </body>
 </html>
+
