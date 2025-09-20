@@ -3,61 +3,89 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>מנהל תקציב — קבוצות + פירוט</title>
+<title>מנהל תקציב — ורוד משופר</title>
 <style>
   :root{
-    --bg:#fff7fb; --card:#fff; --ink:#3a0a27; --muted:#7a3b5c;
-    --pink1:#f472b6; --pink2:#fb7185; --pink3:#fde2f3;
-    --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-    --line:#fbcfe8;
+    --bg:#fff7fb; --surface:#fff; --ink:#3a0a27; --muted:#7a3b5c;
+    --pink1:#f472b6; --pink2:#fb7185; --pink3:#fde2f3; --line:#f8c7df;
+    --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; --ring:#f472b6;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;font-family:system-ui,Segoe UI,Heebo,Arial,sans-serif;color:var(--ink);
     background:linear-gradient(135deg,#ffe4f1,#fff7fb)}
-  .hero{padding:26px 16px;text-align:center;background:radial-gradient(1200px 420px at center,#ffe4f1 0%,#fff7fb 60%,transparent 100%)}
-  .hero h1{margin:0 0 8px;font-size:clamp(22px,3.4vw,30px)}
+  .hero{
+    padding:24px 16px;text-align:center;
+    background:radial-gradient(1200px 420px at center,#ffe4f1 0%,#fff7fb 60%,transparent 100%);
+  }
+  .hero h1{margin:0 0 6px;font-size:clamp(22px,3.4vw,30px)}
   .hero p{margin:0;color:var(--muted)}
-  .row{margin-top:12px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
-  .row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
-  .btn{border:none;border-radius:12px;padding:10px 14px;background:var(--pink1);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(244,114,182,.25)}
+  .row{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+  .row input{
+    padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7;min-width:220px
+  }
+  .btn{
+    border:none;border-radius:12px;padding:10px 14px;background:var(--pink1);color:#fff;cursor:pointer;font-weight:700;
+    box-shadow:0 8px 20px rgba(244,114,182,.22)
+  }
   .btn:hover{filter:brightness(.95)}
   .btn.ghost{background:#ffe4f1;color:#8b1a47}
   .btn.tiny{padding:6px 10px;font-size:12px;border-radius:10px}
   .btn.danger{background:var(--bad)}
   .container{max-width:1100px;margin:18px auto;padding:0 16px}
-  h2{margin:18px 4px 10px;color:#9d174d}
-  .group{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 10px 28px rgba(244,114,182,.12)}
-  .group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .group-title{margin:0;font-size:18px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-  .card{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:12px}
-  .card-top{display:flex;justify-content:space-between;align-items:center}
-  .sub-name{margin:0;font-size:15px;color:#9d174d}
-  .numbers{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:13px}
-  .label{color:#a11a51}
+
+  /* קבוצות */
+  .group{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:16px;
+    box-shadow:0 10px 24px rgba(244,114,182,.12)}
+  .group-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .group-title{margin:0;font-size:18px;color:#9d174d}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+
+  /* כרטיס תת־קטגוריה */
+  .card{background:#fff;border:1px dashed var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .sub-name{margin:0;font-size:16px;color:#9d174d}
+  .numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center}
+  .num{color:var(--muted);font-size:13px;white-space:nowrap}
+  .num strong{color:#111827}
   .bar-wrap{height:8px;background:var(--pink3);border-radius:999px;overflow:hidden}
   .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pink2),var(--pink1));transition:width .3s}
-  .add-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;margin-top:10px}
-  .add-row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
-  .tools{display:flex;gap:6px;margin-top:8px}
-  .summary{margin:22px 0}
-  .summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+
+  .add-row{
+    display:grid;grid-template-columns:1fr 140px auto auto;gap:8px
+  }
+  @media (max-width:540px){
+    .add-row{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
+    .add-row .btn.add, .add-row .btn.minus{width:100%}
+  }
+  .add-row input{
+    padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7;width:100%
+  }
+  input:focus{outline:none;box-shadow:0 0 0 3px #fce7f3;border-color:var(--ring)}
+
+  .tools{display:flex;gap:6px;flex-wrap:wrap}
+  .details{border-top:1px solid #f7c6df;padding-top:8px}
+  .hidden{display:none}
+
+  table{width:100%;border-collapse:collapse;margin-top:6px}
+  th,td{border-bottom:1px solid #f1c6df;padding:8px 6px;font-size:13px;text-align:right}
+  th{background:#fff5fb;color:#7a3b5c}
+
+  /* סיכום */
+  .summary{margin:22px auto;max-width:1100px;padding:0 16px}
+  .summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
   .summary-card h3{margin:0 0 4px;font-size:14px;color:var(--muted)}
   .summary-card div{font-size:20px;font-weight:800}
   .guard{margin-top:10px;display:flex;align-items:center;gap:8px;font-weight:700}
   .guard .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px #dcfce7}
   .guard.warn .dot{background:var(--warn);box-shadow:0 0 0 4px #fef9c3}
-  .guard.bad .dot{background:var(--bad);box-shadow:0 0 0 4px #fee2e2}
-  table{width:100%;border-collapse:collapse;margin-top:8px}
-  th,td{border-bottom:1px solid #f1c6df;padding:8px 6px;font-size:13px;text-align:right}
-  th{background:#fff5fb;color:#7a3b5c}
-  .hidden{display:none}
+  .guard.bad  .dot{background:var(--bad); box-shadow:0 0 0 4px #fee2e2}
 </style>
 </head>
 <body>
   <header class="hero">
-    <h1>מנהל תקציב — קבוצות + פירוט</h1>
-    <p>מוסיפים הוצאה עם תיאור לכל תת־קטגוריה, רואים כמה נשאר, ושומרים יעד חיסכון של 1,000 ₪.</p>
+    <h1>מנהל תקציב — ורוד משופר</h1>
+    <p>הזיני הכנסות, הוסיפי הוצאות עם תיאור, לחצי Enter לאישור. שומר יעד חיסכון מינימלי 1,000 ₪.</p>
     <div class="row">
       <label>חודש:</label>
       <input id="month" type="month" />
@@ -66,13 +94,13 @@
     <div class="row">
       <label>הכנסות לחודש (₪):</label>
       <input id="incomeInput" type="number" inputmode="decimal" placeholder="למשל: 13750" />
-      <button id="saveIncome" class="btn ghost">שמרי</button>
+      <button id="saveIncome" class="btn">שמרי</button>
     </div>
   </header>
 
   <main class="container" id="app"></main>
 
-  <section class="container summary">
+  <section class="summary">
     <div class="summary-card">
       <div><h3>סה״כ הכנסות</h3><div id="sumIncome">—</div></div>
       <div><h3>סה״כ הוצאות</h3><div id="sumSpent">—</div></div>
@@ -89,42 +117,14 @@
 (function(){
   const MIN_SAVINGS = 1000;
 
-  // ===== מבנה קבוצות ותתי־קטגוריות =====
+  // קבוצות ותתי־קטגוריות
   const GROUPS = [
-    {
-      key:'food', title:'אוכל',
-      subs:[
-        {key:'super',  name:'סופר'},
-        {key:'wolt',   name:'וולט/מסעדות'}
-      ]
-    },
-    {
-      key:'fixed', title:'הוצאות שוטפות',
-      subs:[
-        {key:'bills',    name:'חשבונות'},
-        {key:'loan',     name:'הלוואה'},
-        {key:'rent',     name:'שכר דירה'},
-        {key:'subs',     name:'מנויים קבועים'}
-      ]
-    },
-    {
-      key:'travel', title:'נסיעות',
-      subs:[
-        {key:'public',  name:'תחבורה ציבורית'},
-        {key:'taxi',    name:'מוניות'}
-      ]
-    },
-    {
-      key:'misc', title:'הוצאות',
-      subs:[
-        {key:'fun',       name:'בזבוזים'},
-        {key:'unexpected',name:'הוצאות בלתי צפויות'},
-        {key:'credit',    name:'תשלומי אשראי בקרדיט'}
-      ]
-    }
+    { title:'אוכל', subs:[ {key:'super',name:'סופר'}, {key:'wolt',name:'וולט/מסעדות'} ] },
+    { title:'הוצאות שוטפות', subs:[ {key:'bills',name:'חשבונות'}, {key:'loan',name:'הלוואה'}, {key:'rent',name:'שכר דירה'}, {key:'subs',name:'מנויים קבועים'} ] },
+    { title:'נסיעות', subs:[ {key:'public',name:'תחבורה ציבורית'}, {key:'taxi',name:'מוניות'} ] },
+    { title:'הוצאות', subs:[ {key:'fun',name:'בזבוזים'}, {key:'unexpected',name:'הוצאות בלתי צפויות'}, {key:'credit',name:'תשלומי אשראי בקרדיט'} ] }
   ];
 
-  // ===== יעדי ברירת מחדל =====
   const DEFAULT_BUDGETS = {
     super:2000, wolt:1000,
     bills:280, loan:1000, rent:3600, subs:315,
@@ -132,7 +132,7 @@
     fun:500, unexpected:400, credit:1914
   };
 
-  // ===== DOM refs =====
+  // DOM
   const app = document.getElementById('app');
   const monthEl = document.getElementById('month');
   const switchBtn = document.getElementById('switchMonth');
@@ -146,54 +146,45 @@
   const guardRow    = document.querySelector('.guard');
   const guardText   = document.getElementById('guardText');
 
-  // ===== storage helpers =====
-  const safeStorage = (()=>{ try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return localStorage;}catch{let mem={};return{getItem:k=>mem[k]||null,setItem:(k,v)=>mem[k]=String(v),removeItem:k=>delete mem[k]};}})();
+  // storage
+  const SS = (()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return localStorage;}catch{let m={};return{getItem:k=>m[k]||null,setItem:(k,v)=>m[k]=String(v),removeItem:k=>delete m[k]};}})();
   const nowMonth = ()=>{ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0'); }
-  const sk = m => `budget-grouped:${m}`;
-  const ik = m => `budget-grouped:${m}:income`;
+  const SK = m => `budget-nested:${m}`;
+  const IK = m => `budget-nested:${m}:income`;
 
   function loadState(m){
-    const raw = safeStorage.getItem(sk(m));
+    const raw = SS.getItem(SK(m));
     if(!raw){
-      // מבנה מצב: budgets, spent, items לכל תת־קטגוריה
-      const state = {month:m, budgets:{}, spent:{}, items:{}};
+      const st={month:m,budgets:{},spent:{},items:{}};
       GROUPS.forEach(g=>g.subs.forEach(s=>{
-        state.budgets[s.key] = DEFAULT_BUDGETS[s.key] ?? 0;
-        state.spent[s.key]   = 0;
-        state.items[s.key]   = []; // [{ts,amount,desc}]
+        st.budgets[s.key]=DEFAULT_BUDGETS[s.key]||0;
+        st.spent[s.key]=0;
+        st.items[s.key]=[];
       }));
-      safeStorage.setItem(sk(m), JSON.stringify(state));
-      return state;
+      SS.setItem(SK(m), JSON.stringify(st));
+      return st;
     }
-    try { return JSON.parse(raw); }
-    catch { safeStorage.removeItem(sk(m)); return loadState(m); }
+    try{return JSON.parse(raw);}catch{SS.removeItem(SK(m));return loadState(m);}
   }
-  const saveState = st => safeStorage.setItem(sk(st.month), JSON.stringify(st));
-  const loadIncome = m => Number(safeStorage.getItem(ik(m))) || 0;
-  const saveIncome = (m,v)=> safeStorage.setItem(ik(m), String(v||0));
+  const saveState=st=>SS.setItem(SK(st.month),JSON.stringify(st));
+  const loadIncome=m=>Number(SS.getItem(IK(m)))||0;
+  const saveIncome=(m,v)=>SS.setItem(IK(m),String(v||0));
 
-  // ===== utils =====
-  const fmt = n => Number(n||0).toLocaleString('he-IL',{maximumFractionDigits:0});
+  const fmt=n=>Number(n||0).toLocaleString('he-IL',{maximumFractionDigits:0});
 
-  // ===== render =====
   let state;
 
   function render(){
-    app.innerHTML = '';
+    app.innerHTML='';
     GROUPS.forEach(group=>{
-      const gEl = document.createElement('section');
-      gEl.className='group';
-      gEl.innerHTML = `
-        <div class="group-head">
-          <h2 class="group-title">${group.title}</h2>
-        </div>
-        <div class="grid"></div>
-      `;
-      const grid = gEl.querySelector('.grid');
+      const g = document.createElement('section');
+      g.className='group';
+      g.innerHTML = `<div class="group-head"><h2 class="group-title">${group.title}</h2></div><div class="grid"></div>`;
+      const grid = g.querySelector('.grid');
 
       group.subs.forEach(sub=>{
-        const key = sub.key;
-        const card = document.createElement('div');
+        const key=sub.key;
+        const card=document.createElement('div');
         card.className='card';
         card.innerHTML = `
           <div class="card-top">
@@ -201,9 +192,9 @@
             <button class="btn tiny ghost edit">עריכת יעד</button>
           </div>
           <div class="numbers">
-            <div><span class="label">יעד:</span> <span class="budget">0</span> ₪</div>
-            <div><span class="label">הוצאתי:</span> <span class="spent">0</span> ₪</div>
-            <div><span class="label">נשאר:</span> <span class="left">0</span> ₪</div>
+            <div class="num">יעד: <strong class="budget">0</strong> ₪</div>
+            <div class="num">הוצאתי: <strong class="spent">0</strong> ₪</div>
+            <div class="num">נשאר: <strong class="left">0</strong> ₪</div>
           </div>
           <div class="bar-wrap"><div class="bar"></div></div>
           <div class="add-row">
@@ -224,91 +215,87 @@
         `;
         grid.appendChild(card);
 
-        const budgetEl = card.querySelector('.budget');
-        const spentEl  = card.querySelector('.spent');
-        const leftEl   = card.querySelector('.left');
-        const bar      = card.querySelector('.bar');
-        const editBtn  = card.querySelector('.edit');
-        const addBtn   = card.querySelector('.add');
-        const minusBtn = card.querySelector('.minus');
-        const descIn   = card.querySelector('.desc');
-        const amountIn = card.querySelector('.amount');
-        const toggle   = card.querySelector('.toggle');
-        const details  = card.querySelector('.details');
-        const tbody    = details.querySelector('tbody');
+        const budgetEl=card.querySelector('.budget');
+        const spentEl =card.querySelector('.spent');
+        const leftEl  =card.querySelector('.left');
+        const bar     =card.querySelector('.bar');
+        const editBtn =card.querySelector('.edit');
+        const addBtn  =card.querySelector('.add');
+        const minusBtn=card.querySelector('.minus');
+        const descIn  =card.querySelector('.desc');
+        const amtIn   =card.querySelector('.amount');
+        const toggle  =card.querySelector('.toggle');
+        const details =card.querySelector('.details');
+        const tbody   =details.querySelector('tbody');
 
         function refresh(){
-          const b = state.budgets[key]||0;
-          const s = state.spent[key]||0;
-          const l = b - s;
-          budgetEl.textContent = fmt(b);
-          spentEl.textContent  = fmt(s);
-          leftEl.textContent   = fmt(l);
+          const b=state.budgets[key]||0, s=state.spent[key]||0, l=b-s;
+          budgetEl.textContent=fmt(b); spentEl.textContent=fmt(s); leftEl.textContent=fmt(l);
           bar.style.width = b>0 ? Math.min(100,(s/b)*100)+'%' : '0%';
           bar.style.background = l>=0 ? 'linear-gradient(90deg,#fb7185,#f472b6)' : 'linear-gradient(90deg,#f59e0b,#ef4444)';
           // היסטוריה
-          tbody.innerHTML = '';
+          tbody.innerHTML='';
           (state.items[key]||[]).slice().reverse().forEach(it=>{
-            const tr = document.createElement('tr');
-            const d  = new Date(it.ts);
-            const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-            tr.innerHTML = `<td>${ds}</td><td>${it.desc||''}</td><td>${fmt(it.amount)}</td>`;
+            const d=new Date(it.ts);
+            const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            const tr=document.createElement('tr');
+            tr.innerHTML=`<td>${ds}</td><td>${it.desc||''}</td><td>${fmt(it.amount)}</td>`;
             tbody.appendChild(tr);
           });
         }
 
-        function add(amount, desc){
-          const v = Number(amount);
-          if(!v || isNaN(v) || v<=0) return;
-          // שמירת יעד חיסכון
+        function canSpend(v){
           const income = loadIncome(state.month);
-          const totalSpent = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
-          if(income - (totalSpent + v) < MIN_SAVINGS){
-            alert(`ההוצאה תוריד מתחת לחיסכון המינימלי (${MIN_SAVINGS} ₪).`);
-            return;
-          }
-          state.spent[key] = (state.spent[key]||0) + v;
-          state.items[key].push({ts:Date.now(), amount:v, desc: (desc||'').trim()});
-          saveState(state);
-          descIn.value=''; amountIn.value='';
-          refresh(); refreshSummary();
+          const total  = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+          return income - (total + v) >= MIN_SAVINGS;
         }
 
-        function minus(amount){
-          const v = Number(amount);
-          if(!v || isNaN(v) || v<=0) return;
-          state.spent[key] = Math.max(0, (state.spent[key]||0) - v);
-          // לא מוחקים שורות היסטוריה אוטומטית; זו רק התאמה כספית לאחור
-          saveState(state);
-          amountIn.value='';
-          refresh(); refreshSummary();
+        function add(v, desc){
+          const n=Number(v); if(!n || isNaN(n) || n<=0) return;
+          if(!canSpend(n)){ alert(`ההוצאה תוריד מתחת ליעד חיסכון ${MIN_SAVINGS} ₪.`); return; }
+          state.spent[key]=(state.spent[key]||0)+n;
+          state.items[key].push({ts:Date.now(), amount:n, desc:(desc||'').trim()});
+          saveState(state); descIn.value=''; amtIn.value='';
+          refresh(); summary();
+        }
+        function minus(v){
+          const n=Number(v); if(!n || isNaN(n) || n<=0) return;
+          state.spent[key]=Math.max(0,(state.spent[key]||0)-n);
+          saveState(state); amtIn.value=''; refresh(); summary();
         }
 
-        editBtn.addEventListener('click', ()=>{
-          const current = state.budgets[key]||0;
-          const next = prompt(`יעד חדש ל"${sub.name}" (₪):`, current);
-          const n = Number(next);
-          if(Number.isFinite(n) && n>=0){
-            state.budgets[key]=n; saveState(state); refresh(); refreshSummary();
-          }
+        // כניסה עם Enter — מוסיף הוצאה
+        [descIn, amtIn].forEach(el=>{
+          el.addEventListener('keydown', (e)=>{
+            if(e.key==='Enter'){
+              e.preventDefault();
+              add(amtIn.value, descIn.value);
+            }
+          });
         });
-        addBtn.addEventListener('click', ()=> add(amountIn.value, descIn.value));
-        minusBtn.addEventListener('click', ()=> minus(amountIn.value));
+
+        addBtn.addEventListener('click', ()=> add(amtIn.value, descIn.value));
+        minusBtn.addEventListener('click', ()=> minus(amtIn.value));
+        editBtn.addEventListener('click', ()=>{
+          const cur=state.budgets[key]||0;
+          const next=prompt(`יעד חדש ל"${sub.name}" (₪):`, cur);
+          const n=Number(next);
+          if(Number.isFinite(n) && n>=0){ state.budgets[key]=n; saveState(state); refresh(); summary(); }
+        });
         toggle.addEventListener('click', ()=> details.classList.toggle('hidden'));
 
         refresh();
       });
 
-      app.appendChild(gEl);
+      app.appendChild(g);
     });
   }
 
-  function refreshSummary(){
+  function summary(){
     const income = loadIncome(state.month);
-    const spent  = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
-    const leftRaw= income - spent;
-    const left   = leftRaw - MIN_SAVINGS;
-
+    const spent = Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+    const leftRaw = income - spent;
+    const left = leftRaw - MIN_SAVINGS;
     sumIncomeEl.textContent = fmt(income)+' ₪';
     sumSpentEl.textContent  = fmt(spent)+' ₪';
     sumLeftEl.textContent   = fmt(left)+' ₪';
@@ -319,41 +306,30 @@
     else { guardText.textContent='שומרות על יעד החיסכון'; }
   }
 
-  // ===== init & events =====
+  // init + events
   monthEl.value = nowMonth();
   state = loadState(monthEl.value);
   incomeInput.value = loadIncome(state.month) || '';
-  render(); refreshSummary();
+  render(); summary();
 
   switchBtn.addEventListener('click', ()=>{
     state = loadState(monthEl.value);
     incomeInput.value = loadIncome(state.month) || '';
-    render(); refreshSummary();
+    render(); summary();
   });
   saveIncomeBtn.addEventListener('click', ()=>{
-    const v = Number(incomeInput.value);
-    if(!isNaN(v) && v>=0){ saveIncome(state.month, v); refreshSummary(); }
+    const v=Number(incomeInput.value);
+    if(!isNaN(v) && v>=0){ saveIncome(state.month, v); summary(); }
   });
   resetBtn.addEventListener('click', ()=>{
     if(!confirm('לאפס נתוני חודש זה?')) return;
-    safeStorage.removeItem(sk(state.month));
-    safeStorage.removeItem(ik(state.month));
-    state = loadState(state.month);
-    incomeInput.value='';
-    render(); refreshSummary();
+    SS.removeItem(SK(state.month)); SS.removeItem(IK(state.month));
+    state = loadState(state.month); incomeInput.value='';
+    render(); summary();
   });
   exportBtn.addEventListener('click', ()=>{
-    const blob = new Blob([JSON.stringify({
-      month:state.month,
-      income: loadIncome(state.month),
-      budgets:state.budgets,
-      spent:state.spent,
-      items:state.items
-    },null,2)], {type:'application/json'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download=`budget-${state.month}.json`;
-    a.click();
+    const blob = new Blob([JSON.stringify({month:state.month,income:loadIncome(state.month),...state},null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`budget-${state.month}.json`; a.click();
   });
 })();
 </script>
