@@ -3,19 +3,56 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>מנהל תקציב חודשי</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>תקציב ורוד — בדיקה</title>
+  <style>
+    :root{
+      --bg:#fff7fb; --card:#fff; --ink:#3a0a27; --muted:#7a3b5c;
+      --pink1:#f472b6; --pink2:#fb7185; --pink3:#fde2f3;
+      --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:system-ui,Segoe UI,Heebo,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#ffe4f1,#fff7fb)}
+    .hero{padding:28px 16px;text-align:center;background:radial-gradient(1200px 420px at center,#ffe4f1 0%,#fff7fb 60%,transparent 100%)}
+    .hero h1{margin:0 0 8px;font-size:clamp(22px,3.4vw,30px)}
+    .hero p{margin:0;color:var(--muted)}
+    .row{margin-top:12px;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+    .row input{padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
+    .container{max-width:900px;margin:18px auto;padding:0 16px}
+    h2{margin:18px 4px 10px;color:#9d174d}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .card{background:var(--card);border:1px solid #fbcfe8;border-radius:18px;padding:14px;box-shadow:0 10px 28px rgba(244,114,182,.15)}
+    .card-top{display:flex;justify-content:space-between;align-items:center}
+    .numbers{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:14px}
+    .label{color:#a11a51}
+    .bar-wrap{height:10px;background:var(--pink3);border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--pink2),var(--pink1));transition:width .3s}
+    .add-row{display:flex;gap:8px;margin-top:10px}
+    .add-input{flex:1;padding:10px;border:1px solid #f9a8d4;border-radius:12px;background:#fff0f7}
+    .btn{border:none;border-radius:12px;padding:10px 14px;background:var(--pink1);color:#fff;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(244,114,182,.25)}
+    .btn.ghost{background:#ffe4f1;color:#8b1a47}
+    .btn.tiny{padding:6px 10px;font-size:12px;border-radius:10px}
+    .btn.danger{background:var(--bad)}
+    .summary{margin:22px 0}
+    .summary-card{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;background:#fff;border:1px solid #fbcfe8;border-radius:18px;padding:14px}
+    .summary-card h3{margin:0 0 4px;font-size:14px;color:var(--muted)}
+    .summary-card div{font-size:20px;font-weight:800}
+    .guard{margin-top:10px;display:flex;align-items:center;gap:8px;font-weight:700}
+    .guard .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px #dcfce7}
+    .guard.warn .dot{background:var(--warn);box-shadow:0 0 0 4px #fef9c3}
+    .guard.bad  .dot{background:var(--bad); box-shadow:0 0 0 4px #fee2e2}
+    .foot{padding:18px;text-align:center;color:var(--muted);font-size:12px}
+  </style>
 </head>
 <body>
   <header class="hero">
-    <h1>מנהל תקציב חודשי</h1>
-    <p>מזינים הכנסות לחודש, מוסיפים הוצאות בקטגוריות, ורואים מה נשאר.</p>
+    <h1>מנהל תקציב — ורוד (בדיקה)</h1>
+    <p>הזיני הכנסות, הוסיפי הוצאות, ושמרי יעד חיסכון מינימלי של 1,000 ₪.</p>
     <div class="row">
       <label>חודש:</label>
       <input id="month" type="month" />
       <button id="switchMonth" class="btn ghost">עברי לחודש</button>
     </div>
-    <div class="row income-row">
+    <div class="row">
       <label>הכנסות לחודש (₪):</label>
       <input id="incomeInput" type="number" inputmode="decimal" placeholder="לדוגמה: 13750" />
       <button id="saveIncome" class="btn ghost">שמרי</button>
@@ -24,38 +61,21 @@
 
   <main class="container">
     <section>
-      <h2>הוצאות משתנות</h2>
-      <div id="variable" class="grid"></div>
-    </section>
-
-    <section>
-      <h2>הוצאות קבועות</h2>
-      <div id="fixed" class="grid"></div>
+      <h2>קטגוריות לדוגמה</h2>
+      <div id="wrap" class="grid"></div>
     </section>
 
     <section class="summary">
       <div class="summary-card">
-        <div>
-          <h3>סה״כ הכנסות</h3>
-          <div id="sumIncome">—</div>
-        </div>
-        <div>
-          <h3>סה״כ הוצאות</h3>
-          <div id="sumSpent">—</div>
-        </div>
-        <div>
-          <h3>יתרה</h3>
-          <div id="sumLeft">—</div>
-        </div>
+        <div><h3>סה״כ הכנסות</h3><div id="sumIncome">—</div></div>
+        <div><h3>סה״כ הוצאות</h3><div id="sumSpent">—</div></div>
+        <div><h3>יתרה (אחרי יעד 1,000)</h3><div id="sumLeft">—</div></div>
       </div>
-      <div class="actions">
-        <button id="resetMonth" class="btn danger">איפוס חודש</button>
-        <button id="exportJson" class="btn">ייצוא נתונים (JSON)</button>
-      </div>
+      <div class="guard"><span class="dot"></span><span id="guardText">שומרות על יעד החיסכון</span></div>
     </section>
   </main>
 
-  <footer class="foot">פשוט. חיובי. בשליטה.</footer>
+  <footer class="foot">אם זה עובד — מרחיבים לכל הקטגוריות.</footer>
 
   <template id="catRow">
     <div class="card">
@@ -77,6 +97,97 @@
     </div>
   </template>
 
-  <script src="script.js"></script>
+  <script>
+    // ========= לוגיקה בסיסית, בלי תלות בקבצים חיצוניים =========
+    const MIN_SAVINGS = 1000;
+    const DEFAULTS = {"אוכל":3000,"סופר":2000,"מסעדות/וולט":1000,"תחבורה":300,"חשבונות":280};
+    const monthEl = document.getElementById('month');
+    const wrap = document.getElementById('wrap');
+    const tpl = document.getElementById('catRow');
+    const sumIncomeEl = document.getElementById('sumIncome');
+    const sumSpentEl  = document.getElementById('sumSpent');
+    const sumLeftEl   = document.getElementById('sumLeft');
+    const guardRow    = document.querySelector('.guard');
+    const guardText   = document.getElementById('guardText');
+    const incomeInput = document.getElementById('incomeInput');
+
+    function fmt(n){ return Number(n||0).toLocaleString('he-IL',{maximumFractionDigits:0}); }
+    function nowMonth(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0'); }
+    function sk(m){ return 'pink-demo:'+m; } function ik(m){ return 'pink-demo:'+m+':income'; }
+
+    // אחסון בטוח (פולבאק אם localStorage חסום)
+    const SS = (()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return localStorage;}catch{let mem={};return{getItem:k=>mem[k]||null,setItem:(k,v)=>mem[k]=String(v),removeItem:k=>delete mem[k]};}})();
+
+    function load(m){
+      const raw = SS.getItem(sk(m));
+      if(!raw){
+        const data = {month:m, budgets:{...DEFAULTS}, spent:Object.fromEntries(Object.keys(DEFAULTS).map(k=>[k,0]))};
+        SS.setItem(sk(m), JSON.stringify(data));
+        return data;
+      }
+      try{return JSON.parse(raw);}catch{SS.removeItem(sk(m));return load(m);}
+    }
+    function save(d){ SS.setItem(sk(d.month), JSON.stringify(d)); }
+    function loadInc(m){ return Number(SS.getItem(ik(m)))||0; }
+    function saveInc(m,v){ SS.setItem(ik(m), String(v||0)); }
+
+    let state;
+
+    function renderCat(parent, key){
+      const node = tpl.content.firstElementChild.cloneNode(true);
+      const name=node.querySelector('.cat-name');
+      const budgetEl=node.querySelector('.budget');
+      const spentEl=node.querySelector('.spent');
+      const leftEl=node.querySelector('.left');
+      const bar=node.querySelector('.bar');
+      const add=node.querySelector('.add');
+      const minus=node.querySelector('.minus');
+      const input=node.querySelector('.add-input');
+      const edit=node.querySelector('.edit');
+      name.textContent=key;
+
+      function refresh(){
+        const b=state.budgets[key]||0, s=state.spent[key]||0, l=b-s;
+        budgetEl.textContent=fmt(b); spentEl.textContent=fmt(s); leftEl.textContent=fmt(l);
+        bar.style.width = b>0 ? Math.min(100,(s/b)*100)+'%' : '0%';
+        bar.style.background = l>=0 ? 'linear-gradient(90deg,#fb7185,#f472b6)': 'linear-gradient(90deg,#f59e0b,#ef4444)';
+      }
+      function addAmount(v){
+        const inc=loadInc(monthEl.value), total=Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+        if(inc - (total + v) < MIN_SAVINGS){ alert('ההוצאה תוריד מתחת ל-1,000 ₪ חיסכון. נחסם.'); return; }
+        state.spent[key]=(state.spent[key]||0)+v; save(state); refresh(); summary(); input.value='';
+      }
+      add.addEventListener('click', ()=>{ const v=Number(input.value); if(v>0) addAmount(v); });
+      minus.addEventListener('click', ()=>{ const v=Number(input.value); if(v>0){ state.spent[key]=Math.max(0,(state.spent[key]||0)-v); save(state); refresh(); summary(); input.value=''; }});
+      edit.addEventListener('click', ()=>{ const cur=state.budgets[key]||0; const next=prompt('יעד חדש (₪):', cur); const n=Number(next); if(Number.isFinite(n)&&n>=0){ state.budgets[key]=n; save(state); refresh(); summary(); }});
+
+      parent.appendChild(node); refresh();
+    }
+
+    function summary(){
+      const inc=loadInc(monthEl.value);
+      const spent=Object.values(state.spent).reduce((a,b)=>a+(b||0),0);
+      const leftRaw=inc-spent, left=leftRaw-1000;
+      sumIncomeEl.textContent=fmt(inc)+' ₪';
+      sumSpentEl.textContent=fmt(spent)+' ₪';
+      sumLeftEl.textContent=fmt(left)+' ₪';
+      guardRow.classList.remove('warn','bad');
+      if(leftRaw<1000){ guardRow.classList.add('bad'); guardText.textContent='מתחת ליעד 1,000 — לעצור הוצאות'; }
+      else if(leftRaw<1500){ guardRow.classList.add('warn'); guardText.textContent='קרובות ליעד — זהירות'; }
+      else { guardText.textContent='שומרות על יעד החיסכון'; }
+    }
+
+    // הפעלה
+    monthEl.value = nowMonth();
+    state = load(monthEl.value);
+    document.querySelector('#saveIncome').addEventListener('click', ()=>{ const v=Number(incomeInput.value); if(v>=0){ saveInc(monthEl.value,v); summary(); }});
+
+    // רנדר קטגוריות לדוגמה
+    Object.keys(DEFAULTS).forEach(k=> renderCat(wrap,k));
+    summary();
+
+    // מעבר חודש
+    document.getElementById('switchMonth').addEventListener('click', ()=>{ state=load(monthEl.value); incomeInput.value=loadInc(monthEl.value)||''; summary(); });
+  </script>
 </body>
 </html>
